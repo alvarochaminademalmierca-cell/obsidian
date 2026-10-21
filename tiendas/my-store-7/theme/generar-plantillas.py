@@ -67,8 +67,8 @@ def pdp(subtitle, accs, feats):
       "show_countdown": True, "cutoff_hour": 16, "countdown_text": "Order within [time] to get it processed today", "weekend_text": "Order now — processed first thing Monday",
       "urgency_text": "Holiday season is our busiest time — order early to get it on time",
       "atc_text": "Add to cart", "soldout_text": "Sold out", "unavailable_text": "Unavailable", "show_dynamic": True, "pill_limit": 4, "show_sticky": True,
-      "show_bundle": True, "bundle_product_a": F, "bundle_product_b": L, "bundle_pct": 20, "bundle_title": "Complete the set & save 20%", "bundle_this_text": "This item",
-      "bundle_total_text": "Bundle price", "bundle_button": "Add both & save 20%", "show_payment": True, "payment_text": "Secure, encrypted checkout", "padding_top": 32, "padding_bottom": 48}}
+      "show_bundle": True, "bundle_product_a": F, "bundle_product_b": L, "bundle_pct": 20, "bundle_default": True, "offer_heading": "Choose your offer", "offer_single_title": "Just this one", "offer_bundle_title": "Bundle & save [pct]%", "offer_badge": "Best value",
+      "bundle_button": "Add bundle to cart — save 20%", "show_payment": True, "payment_text": "Secure, encrypted checkout", "padding_top": 32, "padding_bottom": 48}}
     secs = {"main": main, "trust": trust}
     ordr = ["main","trust"]
     for i,f in enumerate(feats):

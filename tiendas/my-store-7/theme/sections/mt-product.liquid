@@ -1,4 +1,5 @@
 {{ 'mt-styles.css' | asset_url | stylesheet_tag }}
+{{ 'mt-offers.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'mt-scripts.js' | asset_url }}" defer></script>
 {% style %}
   #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
@@ -48,19 +49,8 @@
 
     {%- comment -%} Buy box {%- endcomment -%}
     <div class="mt-buy">
-      {%- if section.settings.badge != blank -%}<span class="mt-buy__badge">{% render 'mt-icon', name: 'paw' %}{{ section.settings.badge }}</span>{%- endif -%}
-      <h1 class="mt-buy__title">{{ product.title }}</h1>
-      {%- if section.settings.subtitle != blank -%}<p class="mt-buy__sub">{{ section.settings.subtitle }}</p>{%- endif -%}
-
-      <div class="mt-buy__price">
-        <span class="mt-buy__now" data-mt-price>{{ current.price | money }}</span>
-        <s class="mt-buy__was" data-mt-was{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
-        <span class="mt-buy__off" data-mt-off{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{% if current.compare_at_price > current.price %}-{{ current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price }}%{% endif %}</span>
-      </div>
-      {%- if section.settings.price_note != blank -%}<p class="mt-buy__tax">{{ section.settings.price_note }}</p>{%- endif -%}
-
       {%- comment -%} Urgency {%- endcomment -%}
-      <div class="mt-urgency">
+      <div class="mt-urgency mt-urgency--top">
         {%- if section.settings.show_stock -%}
           <div class="mt-urgency__row mt-urgency__row--hot" data-mt-stock-low hidden style="flex-wrap:wrap">
             <span class="mt-dot mt-dot--hot"></span><span>{{ section.settings.low_stock_text | replace: '[count]', '<b data-mt-stock-count></b>' }}</span>
@@ -80,8 +70,58 @@
         {%- endif -%}
       </div>
 
+      {%- if section.settings.badge != blank -%}<span class="mt-buy__badge">{% render 'mt-icon', name: 'paw' %}{{ section.settings.badge }}</span>{%- endif -%}
+      <h1 class="mt-buy__title">{{ product.title }}</h1>
+
+      <div class="mt-buy__price">
+        <span class="mt-buy__now" data-mt-price>{{ current.price | money }}</span>
+        <s class="mt-buy__was" data-mt-was{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
+        <span class="mt-buy__off" data-mt-off{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{% if current.compare_at_price > current.price %}-{{ current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price }}%{% endif %}</span>
+      </div>
+      {%- if section.settings.price_note != blank -%}<p class="mt-buy__tax">{{ section.settings.price_note }}</p>{%- endif -%}
+
       {%- form 'product', product, class: 'mt-form', novalidate: 'novalidate' -%}
         <input type="hidden" name="id" value="{{ current.id }}" data-mt-variant-id>
+
+        {%- comment -%} Offer picker: single product or bundle {%- endcomment -%}
+        {%- if other != blank and section.settings.show_bundle -%}
+          {%- assign ov = other.selected_or_first_available_variant -%}
+          {%- assign sum = current.price | plus: ov.price -%}
+          {%- assign bnow = sum | times: keep | divided_by: 100 -%}
+          <div class="mt-offers" data-mt-bundle data-mt-offers data-pct="{{ pct }}" data-currency="{{ cart.currency.iso_code }}" data-main-id="{{ current.id }}" data-main-price="{{ current.price }}" role="radiogroup" aria-label="{{ section.settings.offer_heading | escape }}">
+            <p class="mt-offers__heading">{{ section.settings.offer_heading }}</p>
+            <label class="mt-offer">
+              <input type="radio" name="mt-offer-{{ section.id }}" value="single"{% unless section.settings.bundle_default %} checked{% endunless %}>
+              <span class="mt-offer__box">
+                <span class="mt-offer__radio"></span>
+                <span class="mt-offer__img">{%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 120 }}" alt="" width="56" height="56" loading="lazy">{%- endif -%}</span>
+                <span class="mt-offer__info"><span class="mt-offer__title">{{ section.settings.offer_single_title }}</span><span class="mt-offer__meta">{{ product.title }}</span></span>
+                <span class="mt-offer__price"><b data-mt-single-price>{{ current.price | money }}</b></span>
+              </span>
+            </label>
+            <label class="mt-offer mt-offer--bundle">
+              <input type="radio" name="mt-offer-{{ section.id }}" value="bundle"{% if section.settings.bundle_default %} checked{% endif %}>
+              <span class="mt-offer__box">
+                {%- if section.settings.offer_badge != blank -%}<span class="mt-offer__badge">{{ section.settings.offer_badge }}</span>{%- endif -%}
+                <span class="mt-offer__radio"></span>
+                <span class="mt-offer__img mt-offer__img--duo">
+                  {%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 120 }}" alt="" width="40" height="40" loading="lazy">{%- endif -%}
+                  {%- if other.featured_image -%}<img src="{{ other.featured_image | image_url: width: 120 }}" alt="" width="40" height="40" loading="lazy">{%- endif -%}
+                </span>
+                <span class="mt-offer__info"><span class="mt-offer__title">{{ section.settings.offer_bundle_title | replace: '[pct]', pct }}</span><span class="mt-offer__meta">+ {{ other.title }}</span></span>
+                <span class="mt-offer__price"><b data-mt-bundle-now>{{ bnow | money }}</b><s data-mt-bundle-was>{{ sum | money }}</s></span>
+              </span>
+            </label>
+            <div class="mt-offer__extra" data-mt-offer-extra{% unless section.settings.bundle_default %} hidden{% endunless %}>
+              {%- unless other.has_only_default_variant or other.variants.size == 1 -%}
+                <label class="mt-opt__label" for="mt-other-{{ section.id }}">{{ other.title }}</label>
+              {%- endunless -%}
+              <select class="mt-select" id="mt-other-{{ section.id }}" data-mt-bundle-select aria-label="{{ other.title | escape }}"{% if other.has_only_default_variant or other.variants.size == 1 %} hidden{% endif %}>
+                {%- for v in other.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}"{% if v.id == ov.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}</option>{%- endfor -%}
+              </select>
+            </div>
+          </div>
+        {%- endif -%}
         {%- unless product.has_only_default_variant -%}
           {%- for option in product.options_with_values -%}
             {%- assign opos = forloop.index0 -%}
@@ -111,41 +151,14 @@
             <input type="number" name="quantity" value="1" min="1" aria-label="Quantity">
             <button type="button" data-plus aria-label="Increase quantity">+</button>
           </div>
-          <button type="submit" name="add" class="mt-btn mt-btn--full" data-mt-atc data-mt-atc-main data-label="{{ section.settings.atc_text | escape }}" data-soldout="{{ section.settings.soldout_text | escape }}" data-unavailable="{{ section.settings.unavailable_text | escape }}"{% unless current.available %} disabled{% endunless %}>
+          <button type="submit" name="add" class="mt-btn mt-btn--full" data-mt-atc data-mt-atc-main data-label="{{ section.settings.atc_text | escape }}" data-bundle-label="{{ section.settings.bundle_button | escape }}" data-soldout="{{ section.settings.soldout_text | escape }}" data-unavailable="{{ section.settings.unavailable_text | escape }}"{% unless current.available %} disabled{% endunless %}>
             {%- if current.available -%}{{ section.settings.atc_text }}{%- else -%}{{ section.settings.soldout_text }}{%- endif -%}
           </button>
         </div>
-        {%- if section.settings.show_dynamic -%}<div class="mt-buy__dynamic">{{ form | payment_button }}</div>{%- endif -%}
+        <p class="mt-msg" data-mt-bundle-msg role="alert"></p>
+        {%- if section.settings.show_dynamic -%}<div class="mt-buy__dynamic" data-mt-dynamic>{{ form | payment_button }}</div>{%- endif -%}
       {%- endform -%}
-
-      {%- comment -%} Bundle upsell {%- endcomment -%}
-      {%- if other != blank and section.settings.show_bundle -%}
-        {%- assign ov = other.selected_or_first_available_variant -%}
-        {%- assign sum = current.price | plus: ov.price -%}
-        {%- assign bnow = sum | times: keep | divided_by: 100 -%}
-        <div class="mt-upsell" data-mt-bundle data-pct="{{ pct }}" data-currency="{{ cart.currency.iso_code }}" data-main-id="{{ current.id }}" data-main-price="{{ current.price }}">
-          <div class="mt-upsell__head"><span>{{ section.settings.bundle_title }}</span><span>-{{ pct }}%</span></div>
-          <div class="mt-upsell__body">
-            <div class="mt-upsell__item">
-              <div class="mt-upsell__img">{%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 160 }}" alt="" loading="lazy">{%- endif -%}</div>
-              <div><p class="mt-upsell__name">{{ product.title }}</p><p class="mt-upsell__meta">{{ section.settings.bundle_this_text }}</p></div>
-            </div>
-            <div class="mt-upsell__item">
-              <div class="mt-upsell__img">{%- if other.featured_image -%}<img src="{{ other.featured_image | image_url: width: 160 }}" alt="" loading="lazy">{%- endif -%}</div>
-              <div>
-                <p class="mt-upsell__name"><a href="{{ other.url }}" style="color:inherit">{{ other.title }}</a></p>
-                <select class="mt-select" data-mt-bundle-select aria-label="{{ other.title | escape }}"{% if other.has_only_default_variant or other.variants.size == 1 %} hidden{% endif %}>
-                  {%- for v in other.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}"{% if v.id == ov.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}</option>{%- endfor -%}
-                </select>
-                {%- if other.has_only_default_variant or other.variants.size == 1 -%}<p class="mt-upsell__meta">{{ ov.price | money }}</p>{%- endif -%}
-              </div>
-            </div>
-            <div class="mt-upsell__total"><span>{{ section.settings.bundle_total_text }}</span><span><s data-mt-bundle-was>{{ sum | money }}</s><strong data-mt-bundle-now>{{ bnow | money }}</strong></span></div>
-            <button type="button" class="mt-btn mt-btn--full mt-btn--accent" data-mt-bundle-add data-loading="Adding…">{{ section.settings.bundle_button }}</button>
-            <p class="mt-msg" data-mt-bundle-msg role="alert" style="margin:0"></p>
-          </div>
-        </div>
-      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}<p class="mt-buy__sub">{{ section.settings.subtitle }}</p>{%- endif -%}
 
       {%- comment -%} Trust perks {%- endcomment -%}
       {%- assign perks = section.blocks | where: 'type', 'perk' -%}
@@ -219,9 +232,11 @@
     { "type": "product", "id": "bundle_product_a", "label": "Bundle product 1" },
     { "type": "product", "id": "bundle_product_b", "label": "Bundle product 2" },
     { "type": "range", "id": "bundle_pct", "label": "Bundle discount shown (%)", "info": "Must match the automatic discount in Shopify admin → Discounts.", "min": 5, "max": 50, "step": 5, "unit": "%", "default": 20 },
-    { "type": "text", "id": "bundle_title", "label": "Bundle title", "default": "Complete the set & save 20%" },
-    { "type": "text", "id": "bundle_this_text", "label": "Label for this product", "default": "This item" },
-    { "type": "text", "id": "bundle_total_text", "label": "Total label", "default": "Bundle price" },
+    { "type": "checkbox", "id": "bundle_default", "label": "Pre-select the bundle", "default": true },
+    { "type": "text", "id": "offer_heading", "label": "Offer picker title", "default": "Choose your offer" },
+    { "type": "text", "id": "offer_single_title", "label": "Single option title", "default": "Just this one" },
+    { "type": "text", "id": "offer_bundle_title", "label": "Bundle option title", "info": "Use [pct] for the percentage.", "default": "Bundle & save [pct]%" },
+    { "type": "text", "id": "offer_badge", "label": "Bundle badge", "default": "Best value" },
     { "type": "text", "id": "bundle_button", "label": "Bundle button", "default": "Add both & save 20%" },
     { "type": "header", "content": "Payment" },
     { "type": "checkbox", "id": "show_payment", "label": "Show payment icons", "default": true },

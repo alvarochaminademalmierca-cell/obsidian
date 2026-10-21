@@ -221,6 +221,7 @@
 
 .mt-msg { font-size: 13px; color: var(--mt-urgent); margin-top: 8px; min-height: 1em; }
 
+
 /* ===================== Responsive ===================== */
 @media (max-width: 989px) {
   .mt-hero__grid, .mt-pdp__grid, .mt-feature, .mt-bundle { grid-template-columns: 1fr; gap: 32px; }
