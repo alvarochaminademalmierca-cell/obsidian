@@ -1,7 +1,7 @@
 # ESTADO — My Store 7
 
 - **Tienda:** My Store 7 — `tczi3w-uv.myshopify.com`
-- **Tema de trabajo (NO publicado):** "Pawlane – New Design (EN)" — `gid://shopify/OnlineStoreTheme/202256875903` (copia de Helio)
+- **Tema de trabajo (NO publicado):** "My Store 7 – New Design (EN)" — `gid://shopify/OnlineStoreTheme/202256875903` (copia de Helio)
 - **Previsualización:** https://tczi3w-uv.myshopify.com/?preview_theme_id=202256875903
 - **Tema en vivo (sin tocar):** Helio — `gid://shopify/OnlineStoreTheme/201844982143`
 - **Fase completada:** 5 (construcción + producto). Falta: revisión del usuario y publicar el tema (fase 6, lo hace el usuario desde el panel: Tienda online → Temas → Publicar).
