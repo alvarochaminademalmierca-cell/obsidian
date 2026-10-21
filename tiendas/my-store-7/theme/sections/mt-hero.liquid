@@ -1,0 +1,71 @@
+{{ 'mt-styles.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mt-scripts.js' | asset_url }}" defer></script>
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .mt-h1 { font-size: clamp(34px, 6vw, {{ section.settings.heading_size }}px); }
+  #shopify-section-{{ section.id }} .mt-hero__text { text-align: {{ section.settings.text_align }}; }
+  #shopify-section-{{ section.id }} .mt-body { font-size: {{ section.settings.body_size }}px; }
+  {%- if section.settings.text_align == 'center' -%}
+  #shopify-section-{{ section.id }} .mt-hero__ctas, #shopify-section-{{ section.id }} .mt-hero__note { justify-content: center; }
+  #shopify-section-{{ section.id }} .mt-hero__text .mt-body { margin-left: auto; margin-right: auto; }
+  {%- endif -%}
+{% endstyle %}
+{%- liquid
+  assign p1 = section.settings.product_1
+  assign p2 = section.settings.product_2
+-%}
+<section class="mt-hero mt-section">
+  <div class="mt-container mt-hero__grid">
+    <div class="mt-hero__text">
+      {%- if section.settings.eyebrow != blank -%}<p class="mt-eyebrow mt-reveal">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h1 class="mt-h1 mt-reveal" data-delay="1">{{ section.settings.headline | newline_to_br }}</h1>
+      <div class="mt-body mt-reveal" data-delay="2">{{ section.settings.body | newline_to_br }}</div>
+      <div class="mt-hero__ctas mt-reveal" data-delay="3">
+        {%- if section.settings.btn1_text != blank -%}<a class="mt-btn" href="{{ section.settings.btn1_link | default: '#mt-bundle' }}">{{ section.settings.btn1_text }}</a>{%- endif -%}
+        {%- if section.settings.btn2_text != blank -%}<a class="mt-btn mt-btn--ghost" href="{{ section.settings.btn2_link | default: '#mt-products' }}">{{ section.settings.btn2_text }}</a>{%- endif -%}
+      </div>
+      {%- if section.settings.note != blank -%}<p class="mt-hero__note mt-reveal" data-delay="3">{% render 'mt-icon', name: 'shield' %}{{ section.settings.note }}</p>{%- endif -%}
+    </div>
+    <div class="mt-hero__media mt-reveal" data-delay="1">
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 1400 }}" alt="{{ section.settings.image.alt | escape }}" loading="eager" fetchpriority="high" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}">
+      {%- else -%}
+        <div class="mt-hero__duo">
+          {%- if p1.featured_image -%}<img src="{{ p1.featured_image | image_url: width: 800 }}" alt="{{ p1.title | escape }}" loading="eager" fetchpriority="high">{%- endif -%}
+          {%- if p2.featured_image -%}<img src="{{ p2.featured_image | image_url: width: 800 }}" alt="{{ p2.title | escape }}" loading="eager">{%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.badge != blank -%}<div class="mt-hero__badge">{% render 'mt-icon', name: 'gift' %}{{ section.settings.badge }}</div>{%- endif -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "MT – Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Small text above title", "default": "Smart pet care" },
+    { "type": "textarea", "id": "headline", "label": "Title", "default": "Happier pets, even when you're away." },
+    { "type": "textarea", "id": "body", "label": "Text", "default": "Smart essentials that keep your pet fed, active and entertained." },
+    { "type": "text", "id": "btn1_text", "label": "Main button text", "default": "Shop the bundle" },
+    { "type": "url", "id": "btn1_link", "label": "Main button link" },
+    { "type": "text", "id": "btn2_text", "label": "Second button text", "default": "Explore products" },
+    { "type": "url", "id": "btn2_link", "label": "Second button link" },
+    { "type": "text", "id": "note", "label": "Small note under buttons", "default": "30-day money-back guarantee" },
+    { "type": "text", "id": "badge", "label": "Badge on image", "default": "Get both & save 20%" },
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image (optional)", "info": "If empty, shows the two products below side by side." },
+    { "type": "product", "id": "product_1", "label": "Product 1" },
+    { "type": "product", "id": "product_2", "label": "Product 2" },
+    { "type": "header", "content": "Typography" },
+    { "type": "select", "id": "text_align", "label": "Text alignment", "options": [ {"value": "left", "label": "Left"}, {"value": "center", "label": "Center"} ], "default": "left" },
+    { "type": "range", "id": "heading_size", "label": "Title size", "min": 32, "max": 88, "step": 2, "unit": "px", "default": 64 },
+    { "type": "range", "id": "body_size", "label": "Text size", "min": 13, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 56 }
+  ],
+  "presets": [ { "name": "MT – Hero" } ]
+}
+{% endschema %}

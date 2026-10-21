@@ -1,0 +1,244 @@
+{
+  "sections": {
+    "hero": {
+      "type": "mt-hero",
+      "settings": {
+        "eyebrow": "Smart pet care",
+        "headline": "Happier pets,\neven when you're away.",
+        "body": "Feed them on time and keep them playing from anywhere. Two smart essentials designed for busy pet parents.",
+        "btn1_text": "Shop the bundle — save 20%",
+        "btn2_text": "Explore products",
+        "note": "Free tracked shipping · 30-day money-back guarantee",
+        "badge": "Get both & save 20%",
+        "product_1": "smart-automatic-pet-feeder",
+        "product_2": "smart-laser-cat-toy-camera",
+        "text_align": "left",
+        "heading_size": 64,
+        "body_size": 18,
+        "padding_top": 56,
+        "padding_bottom": 48
+      }
+    },
+    "trust": {
+      "type": "mt-trust-bar",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free tracked shipping",
+            "text": "US, Canada & Mexico"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "30-day guarantee",
+            "text": "Love it or your money back"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure checkout",
+            "text": "Encrypted payments"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "chat",
+            "title": "Friendly support",
+            "text": "Real people, fast replies"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "title_size": 14,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "products": {
+      "type": "mt-products",
+      "blocks": {
+        "c1": {
+          "type": "product",
+          "settings": {
+            "product": "smart-automatic-pet-feeder",
+            "tag": "Bestseller",
+            "text": "Scheduled, perfectly portioned meals — from buttons or your phone."
+          }
+        },
+        "c2": {
+          "type": "product",
+          "settings": {
+            "product": "smart-laser-cat-toy-camera",
+            "tag": "New",
+            "text": "Check in and start laser playtime from anywhere."
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2"
+      ],
+      "settings": {
+        "eyebrow": "The essentials",
+        "heading": "Two smart products. One happy pet.",
+        "body": "",
+        "link_text": "Shop now",
+        "text_align": "center",
+        "heading_size": 44,
+        "padding_top": 80,
+        "padding_bottom": 40
+      }
+    },
+    "bundle": {
+      "type": "mt-bundle",
+      "settings": {
+        "product_a": "smart-automatic-pet-feeder",
+        "product_b": "smart-laser-cat-toy-camera",
+        "percentage": 20,
+        "tag": "Bundle & save 20%",
+        "heading": "The complete smart-care set",
+        "body": "Meals on schedule and playtime on demand. Get the Smart Feeder and the Laser Cat Toy together and save 20% — applied automatically at checkout.",
+        "save_label": "You save [pct]%",
+        "button": "Add both to cart",
+        "loading_text": "Adding…",
+        "fine": "20% off applied automatically at checkout · Free tracked shipping · 30-day guarantee",
+        "bg": "#e6f0ec",
+        "heading_size": 40,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "feat_feeder": {
+      "type": "mt-feature",
+      "settings": {
+        "product": "smart-automatic-pet-feeder",
+        "product_image_number": 1,
+        "reverse": false,
+        "eyebrow": "Smart Automatic Pet Feeder",
+        "heading": "Meals on time, every time",
+        "body": "Running late? Long day at work? Your pet still eats on schedule, with the right portion every time.",
+        "points": "Large 4L capacity — fewer refills\nSchedule meals by button or from your phone\nOptional HD camera to watch mealtime live\nDetachable parts for quick, easy cleaning",
+        "btn_text": "Shop the feeder",
+        "heading_size": 40,
+        "body_size": 17,
+        "padding_top": 72,
+        "padding_bottom": 40
+      }
+    },
+    "feat_laser": {
+      "type": "mt-feature",
+      "settings": {
+        "product": "smart-laser-cat-toy-camera",
+        "product_image_number": 1,
+        "reverse": true,
+        "eyebrow": "Smart Laser Cat Toy & Pet Camera",
+        "heading": "Playtime, wherever you are",
+        "body": "Indoor cats need to hunt, chase and pounce. Start a laser game from your phone and see them having fun.",
+        "points": "Remote laser play from your phone\nBuilt-in camera to check in anytime\nBurns energy and reduces boredom\nCompact, clean design for any room",
+        "btn_text": "Shop the laser toy",
+        "heading_size": 40,
+        "body_size": 17,
+        "padding_top": 40,
+        "padding_bottom": 56
+      }
+    },
+    "guarantee": {
+      "type": "mt-guarantee",
+      "settings": {
+        "seal_number": "30",
+        "seal_text": "Day guarantee",
+        "heading": "Love it or your money back",
+        "body": "Try it at home for 30 days. If your pet isn't loving it, just contact us and we'll make it right with a full refund. Every order ships free with tracking, so you always know where it is.",
+        "heading_size": 32,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "faq": {
+      "type": "mt-faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Orders are processed within 1–3 business days. Delivery to the US, Canada and Mexico typically takes 7–15 business days. Shipping is always free and every order includes a tracking number.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "How does the 20% bundle discount work?",
+            "answer": "<p>Add both the Smart Automatic Pet Feeder and the Smart Laser Cat Toy to your cart and 20% is taken off automatically at checkout — no code needed.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "What if my pet doesn't like it?",
+            "answer": "<p>You're covered by our 30-day money-back guarantee. Contact us within 30 days of delivery and we'll help you with a return and full refund.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Do I need Wi-Fi for the feeder?",
+            "answer": "<p>Only for the Wi-Fi models, which you control from your phone. The Classic Button model works on its own with simple one-touch scheduling.</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "Is the laser safe for my cat?",
+            "answer": "<p>Yes, when used as intended. Never point the laser directly at eyes, and finish each session with a toy your cat can catch to keep playtime satisfying.</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "Is checkout secure?",
+            "answer": "<p>Absolutely. Payments are processed through Shopify's encrypted checkout. We never see or store your card details.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "settings": {
+        "eyebrow": "Questions?",
+        "heading": "Frequently asked questions",
+        "open_first": true,
+        "heading_size": 40,
+        "padding_top": 64,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "products",
+    "bundle",
+    "feat_feeder",
+    "feat_laser",
+    "guarantee",
+    "faq"
+  ]
+}

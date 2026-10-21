@@ -1,0 +1,37 @@
+{{ 'mt-styles.css' | asset_url | stylesheet_tag }}
+{% style %}
+  #shopify-section-{{ section.id }} .mt-announce { background: {{ section.settings.bg }}; color: {{ section.settings.color }}; font-size: {{ section.settings.size }}px; }
+  #shopify-section-{{ section.id }} .mt-announce__track { --mt-speed: {{ section.settings.speed }}s; }
+{% endstyle %}
+{%- liquid
+  assign msgs = section.blocks | where: 'type', 'message'
+-%}
+<div class="mt-announce mt-section{% unless section.settings.scroll %} mt-announce--static{% endunless %}" role="region" aria-label="Announcements">
+  <div class="mt-announce__track">
+    {%- assign loops = 1 -%}
+    {%- if section.settings.scroll -%}{%- assign loops = 4 -%}{%- endif -%}
+    {%- for i in (1..loops) -%}
+      {%- for block in section.blocks -%}
+        <span class="mt-announce__item" {{ block.shopify_attributes }}{% if i > 1 %} aria-hidden="true"{% endif %}>{{ block.settings.text }}</span>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "MT – Announcement bar",
+  "tag": "section",
+  "class": "mt-announce-section",
+  "settings": [
+    { "type": "checkbox", "id": "scroll", "label": "Scrolling text", "default": true },
+    { "type": "range", "id": "speed", "label": "Scroll speed (seconds per loop)", "min": 10, "max": 80, "step": 5, "unit": "s", "default": 35 },
+    { "type": "range", "id": "size", "label": "Text size", "min": 11, "max": 18, "step": 1, "unit": "px", "default": 13 },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#111111" },
+    { "type": "color", "id": "color", "label": "Text color", "default": "#ffffff" }
+  ],
+  "blocks": [
+    { "type": "message", "name": "Message", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Free tracked shipping to the US, Canada & Mexico" } ] }
+  ],
+  "presets": [ { "name": "MT – Announcement bar", "blocks": [ { "type": "message" } ] } ]
+}
+{% endschema %}

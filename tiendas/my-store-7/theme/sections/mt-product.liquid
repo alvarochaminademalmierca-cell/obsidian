@@ -1,0 +1,246 @@
+{{ 'mt-styles.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mt-scripts.js' | asset_url }}" defer></script>
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .mt-buy__title { font-size: clamp(26px, 3.6vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign low_stock = section.settings.low_stock
+  assign ba = section.settings.bundle_product_a
+  assign bb = section.settings.bundle_product_b
+  assign other = blank
+  if ba != blank and bb != blank
+    if product.id == ba.id
+      assign other = bb
+    elsif product.id == bb.id
+      assign other = ba
+    endif
+  endif
+  assign pct = section.settings.bundle_pct
+  assign keep = 100 | minus: pct
+-%}
+<section class="mt-pdp mt-section" data-mt-product data-currency="{{ cart.currency.iso_code }}" data-low-stock="{{ low_stock }}">
+  <script type="application/json" data-mt-variants>[
+    {%- for v in product.variants -%}
+      {"id":{{ v.id }},"price":{{ v.price }},"compare":{{ v.compare_at_price | default: 0 }},"available":{{ v.available }},"tracked":{% if v.inventory_management == 'shopify' and v.inventory_policy == 'deny' %}true{% else %}false{% endif %},"qty":{{ v.inventory_quantity | default: 0 }},"media":{% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %},"options":{{ v.options | json }}}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]</script>
+  <div class="mt-container mt-pdp__grid">
+    {%- comment -%} Gallery {%- endcomment -%}
+    <div class="mt-gallery">
+      {%- assign first_media = current.featured_media | default: product.featured_media -%}
+      <div class="mt-gallery__main">
+        {%- if first_media -%}
+          <img data-mt-main-img src="{{ first_media.preview_image | image_url: width: 1400 }}" alt="{{ first_media.alt | default: product.title | escape }}" width="1400" height="1400" loading="eager" fetchpriority="high">
+        {%- endif -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+      <div class="mt-gallery__thumbs">
+        {%- for m in product.media limit: section.settings.max_thumbs -%}
+          <button type="button" class="mt-gallery__thumb{% if m.id == first_media.id %} is-active{% endif %}" data-mt-thumb="{{ m.id }}" data-src="{{ m.preview_image | image_url: width: 1400 }}" aria-label="View image {{ forloop.index }}">
+            <img src="{{ m.preview_image | image_url: width: 200 }}" alt="" loading="lazy" width="200" height="200">
+          </button>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Buy box {%- endcomment -%}
+    <div class="mt-buy">
+      {%- if section.settings.badge != blank -%}<span class="mt-buy__badge">{% render 'mt-icon', name: 'paw' %}{{ section.settings.badge }}</span>{%- endif -%}
+      <h1 class="mt-buy__title">{{ product.title }}</h1>
+      {%- if section.settings.subtitle != blank -%}<p class="mt-buy__sub">{{ section.settings.subtitle }}</p>{%- endif -%}
+
+      <div class="mt-buy__price">
+        <span class="mt-buy__now" data-mt-price>{{ current.price | money }}</span>
+        <s class="mt-buy__was" data-mt-was{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
+        <span class="mt-buy__off" data-mt-off{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{% if current.compare_at_price > current.price %}-{{ current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price }}%{% endif %}</span>
+      </div>
+      {%- if section.settings.price_note != blank -%}<p class="mt-buy__tax">{{ section.settings.price_note }}</p>{%- endif -%}
+
+      {%- comment -%} Urgency {%- endcomment -%}
+      <div class="mt-urgency">
+        {%- if section.settings.show_stock -%}
+          <div class="mt-urgency__row mt-urgency__row--hot" data-mt-stock-low hidden style="flex-wrap:wrap">
+            <span class="mt-dot mt-dot--hot"></span><span>{{ section.settings.low_stock_text | replace: '[count]', '<b data-mt-stock-count></b>' }}</span>
+            <span class="mt-stockbar"><span data-mt-stock-bar style="width:30%"></span></span>
+          </div>
+          <div class="mt-urgency__row" data-mt-stock-ok><span class="mt-dot"></span><span>{{ section.settings.in_stock_text }}</span></div>
+        {%- endif -%}
+        {%- if section.settings.show_countdown -%}
+          <div class="mt-urgency__row" data-mt-countdown data-cutoff="{{ section.settings.cutoff_hour }}">
+            {% render 'mt-icon', name: 'clock' %}
+            <span data-mt-weekday>{{ section.settings.countdown_text | replace: '[time]', '<b data-mt-timer>—</b>' }}</span>
+            <span data-mt-weekend hidden>{{ section.settings.weekend_text }}</span>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.urgency_text != blank -%}
+          <div class="mt-urgency__row mt-urgency__row--hot">{% render 'mt-icon', name: 'gift' %}<span>{{ section.settings.urgency_text }}</span></div>
+        {%- endif -%}
+      </div>
+
+      {%- form 'product', product, class: 'mt-form', novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ current.id }}" data-mt-variant-id>
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            {%- assign opos = forloop.index0 -%}
+            {%- if option.values.size > section.settings.pill_limit -%}
+              <div class="mt-opt" data-mt-option="{{ opos }}">
+                <label class="mt-opt__label" for="mt-opt-{{ section.id }}-{{ opos }}">{{ option.name }}</label>
+                <select class="mt-select" id="mt-opt-{{ section.id }}-{{ opos }}">
+                  {%- for value in option.values -%}<option value="{{ value | escape }}"{% if option.selected_value == value %} selected{% endif %}>{{ value }}</option>{%- endfor -%}
+                </select>
+              </div>
+            {%- else -%}
+              <fieldset class="mt-opt" data-mt-option="{{ opos }}">
+                <legend>{{ option.name }}: <span data-mt-opt-current="{{ opos }}">{{ option.selected_value }}</span></legend>
+                <div class="mt-pills">
+                  {%- for value in option.values -%}
+                    <label class="mt-pill"><input type="radio" name="mt-{{ section.id }}-{{ opos }}" value="{{ value | escape }}"{% if option.selected_value == value %} checked{% endif %}><span>{{ value }}</span></label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="mt-atc">
+          <div class="mt-qty" data-mt-qty>
+            <button type="button" data-minus aria-label="Decrease quantity">−</button>
+            <input type="number" name="quantity" value="1" min="1" aria-label="Quantity">
+            <button type="button" data-plus aria-label="Increase quantity">+</button>
+          </div>
+          <button type="submit" name="add" class="mt-btn mt-btn--full" data-mt-atc data-mt-atc-main data-label="{{ section.settings.atc_text | escape }}" data-soldout="{{ section.settings.soldout_text | escape }}" data-unavailable="{{ section.settings.unavailable_text | escape }}"{% unless current.available %} disabled{% endunless %}>
+            {%- if current.available -%}{{ section.settings.atc_text }}{%- else -%}{{ section.settings.soldout_text }}{%- endif -%}
+          </button>
+        </div>
+        {%- if section.settings.show_dynamic -%}<div class="mt-buy__dynamic">{{ form | payment_button }}</div>{%- endif -%}
+      {%- endform -%}
+
+      {%- comment -%} Bundle upsell {%- endcomment -%}
+      {%- if other != blank and section.settings.show_bundle -%}
+        {%- assign ov = other.selected_or_first_available_variant -%}
+        {%- assign sum = current.price | plus: ov.price -%}
+        {%- assign bnow = sum | times: keep | divided_by: 100 -%}
+        <div class="mt-upsell" data-mt-bundle data-pct="{{ pct }}" data-currency="{{ cart.currency.iso_code }}" data-main-id="{{ current.id }}" data-main-price="{{ current.price }}">
+          <div class="mt-upsell__head"><span>{{ section.settings.bundle_title }}</span><span>-{{ pct }}%</span></div>
+          <div class="mt-upsell__body">
+            <div class="mt-upsell__item">
+              <div class="mt-upsell__img">{%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 160 }}" alt="" loading="lazy">{%- endif -%}</div>
+              <div><p class="mt-upsell__name">{{ product.title }}</p><p class="mt-upsell__meta">{{ section.settings.bundle_this_text }}</p></div>
+            </div>
+            <div class="mt-upsell__item">
+              <div class="mt-upsell__img">{%- if other.featured_image -%}<img src="{{ other.featured_image | image_url: width: 160 }}" alt="" loading="lazy">{%- endif -%}</div>
+              <div>
+                <p class="mt-upsell__name"><a href="{{ other.url }}" style="color:inherit">{{ other.title }}</a></p>
+                <select class="mt-select" data-mt-bundle-select aria-label="{{ other.title | escape }}"{% if other.has_only_default_variant or other.variants.size == 1 %} hidden{% endif %}>
+                  {%- for v in other.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}"{% if v.id == ov.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}</option>{%- endfor -%}
+                </select>
+                {%- if other.has_only_default_variant or other.variants.size == 1 -%}<p class="mt-upsell__meta">{{ ov.price | money }}</p>{%- endif -%}
+              </div>
+            </div>
+            <div class="mt-upsell__total"><span>{{ section.settings.bundle_total_text }}</span><span><s data-mt-bundle-was>{{ sum | money }}</s><strong data-mt-bundle-now>{{ bnow | money }}</strong></span></div>
+            <button type="button" class="mt-btn mt-btn--full mt-btn--accent" data-mt-bundle-add data-loading="Adding…">{{ section.settings.bundle_button }}</button>
+            <p class="mt-msg" data-mt-bundle-msg role="alert" style="margin:0"></p>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Trust perks {%- endcomment -%}
+      {%- assign perks = section.blocks | where: 'type', 'perk' -%}
+      {%- if perks.size > 0 -%}
+      <div class="mt-perks">
+        {%- for block in perks -%}<div class="mt-perk" {{ block.shopify_attributes }}>{% render 'mt-icon', name: block.settings.icon %}<span>{{ block.settings.text }}</span></div>{%- endfor -%}
+      </div>
+      {%- endif -%}
+      {%- if section.settings.show_payment -%}
+      <div class="mt-pay">
+        <span class="mt-pay__label">{% render 'mt-icon', name: 'lock' %}{{ section.settings.payment_text }}</span>
+        {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}
+      </div>
+      {%- endif -%}
+
+      {%- comment -%} Accordions {%- endcomment -%}
+      {%- assign accs = section.blocks | where: 'type', 'accordion' -%}
+      {%- if accs.size > 0 -%}
+      <div class="mt-acc">
+        {%- for block in accs -%}
+          <details {{ block.shopify_attributes }}{% if block.settings.open %} open{% endif %}>
+            <summary>{{ block.settings.title }}</summary>
+            <div class="mt-acc__body">
+              {%- if block.settings.use_description -%}{{ product.description }}{%- endif -%}
+              {{ block.settings.content }}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.show_sticky -%}
+  <div class="mt-sticky" data-mt-sticky aria-hidden="true">
+    <div class="mt-sticky__info"><p class="mt-sticky__title">{{ product.title }}</p><p class="mt-sticky__price" data-mt-sticky-price>{{ current.price | money }}</p></div>
+    <button type="button" class="mt-btn" tabindex="-1">{{ section.settings.atc_text }}</button>
+  </div>
+  {%- endif -%}
+</section>
+{% schema %}
+{
+  "name": "MT – Product page",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Top" },
+    { "type": "text", "id": "badge", "label": "Badge above title", "default": "Bestseller" },
+    { "type": "textarea", "id": "subtitle", "label": "Short pitch under title" },
+    { "type": "text", "id": "price_note", "label": "Note under price", "default": "Free tracked shipping included" },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 22, "max": 56, "step": 2, "unit": "px", "default": 40 },
+    { "type": "range", "id": "max_thumbs", "label": "Max thumbnails", "min": 3, "max": 20, "step": 1, "default": 12 },
+    { "type": "header", "content": "Urgency" },
+    { "type": "checkbox", "id": "show_stock", "label": "Show stock message", "default": true },
+    { "type": "range", "id": "low_stock", "label": "Show 'only X left' when stock is at or below", "min": 1, "max": 50, "step": 1, "default": 15 },
+    { "type": "text", "id": "low_stock_text", "label": "Low stock text", "info": "Use [count] for the real number left.", "default": "Hurry — only [count] left in stock" },
+    { "type": "text", "id": "in_stock_text", "label": "In stock text", "default": "In stock — ready to ship" },
+    { "type": "checkbox", "id": "show_countdown", "label": "Show order cut-off countdown", "default": true },
+    { "type": "range", "id": "cutoff_hour", "label": "Daily cut-off hour (shopper's local time, 24h)", "min": 8, "max": 23, "step": 1, "default": 16 },
+    { "type": "text", "id": "countdown_text", "label": "Countdown text", "info": "Use [time] for the timer.", "default": "Order within [time] to get it processed today" },
+    { "type": "text", "id": "weekend_text", "label": "Weekend text", "default": "Order now — processed first thing Monday" },
+    { "type": "text", "id": "urgency_text", "label": "Extra urgency message", "default": "Holiday season is our busiest time — order early to get it on time" },
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "atc_text", "label": "Add to cart text", "default": "Add to cart" },
+    { "type": "text", "id": "soldout_text", "label": "Sold out text", "default": "Sold out" },
+    { "type": "text", "id": "unavailable_text", "label": "Unavailable text", "default": "Unavailable" },
+    { "type": "checkbox", "id": "show_dynamic", "label": "Show express checkout buttons", "default": true },
+    { "type": "range", "id": "pill_limit", "label": "Use a dropdown when an option has more than X values", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "show_sticky", "label": "Sticky add to cart bar on mobile", "default": true },
+    { "type": "header", "content": "Bundle upsell" },
+    { "type": "checkbox", "id": "show_bundle", "label": "Show bundle offer", "default": true },
+    { "type": "product", "id": "bundle_product_a", "label": "Bundle product 1" },
+    { "type": "product", "id": "bundle_product_b", "label": "Bundle product 2" },
+    { "type": "range", "id": "bundle_pct", "label": "Bundle discount shown (%)", "info": "Must match the automatic discount in Shopify admin → Discounts.", "min": 5, "max": 50, "step": 5, "unit": "%", "default": 20 },
+    { "type": "text", "id": "bundle_title", "label": "Bundle title", "default": "Complete the set & save 20%" },
+    { "type": "text", "id": "bundle_this_text", "label": "Label for this product", "default": "This item" },
+    { "type": "text", "id": "bundle_total_text", "label": "Total label", "default": "Bundle price" },
+    { "type": "text", "id": "bundle_button", "label": "Bundle button", "default": "Add both & save 20%" },
+    { "type": "header", "content": "Payment" },
+    { "type": "checkbox", "id": "show_payment", "label": "Show payment icons", "default": true },
+    { "type": "text", "id": "payment_text", "label": "Payment text", "default": "Secure, encrypted checkout" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    { "type": "perk", "name": "Trust perk", "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "options": [ {"value": "truck", "label": "Truck"}, {"value": "return", "label": "Return"}, {"value": "lock", "label": "Lock"}, {"value": "chat", "label": "Chat"}, {"value": "shield", "label": "Shield"}, {"value": "pin", "label": "Location"}, {"value": "paw", "label": "Paw"}, {"value": "clock", "label": "Clock"}, {"value": "gift", "label": "Gift"} ], "default": "truck" },
+      { "type": "text", "id": "text", "label": "Text", "default": "Free tracked shipping" }
+    ] },
+    { "type": "accordion", "name": "Accordion", "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Details" },
+      { "type": "checkbox", "id": "use_description", "label": "Show product description", "default": false },
+      { "type": "richtext", "id": "content", "label": "Content" },
+      { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+    ] }
+  ]
+}
+{% endschema %}

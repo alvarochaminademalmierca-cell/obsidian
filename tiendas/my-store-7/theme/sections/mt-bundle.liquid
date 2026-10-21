@@ -1,0 +1,82 @@
+{{ 'mt-styles.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mt-scripts.js' | asset_url }}" defer></script>
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .mt-bundle { --mt-bundle-bg: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .mt-h2 { font-size: clamp(28px, 4vw, {{ section.settings.heading_size }}px); }
+{% endstyle %}
+{%- liquid
+  assign pa = section.settings.product_a
+  assign pb = section.settings.product_b
+  assign pct = section.settings.percentage
+-%}
+{%- if pa != blank and pb != blank -%}
+{%- liquid
+  assign va = pa.selected_or_first_available_variant
+  assign vb = pb.selected_or_first_available_variant
+  assign sum = va.price | plus: vb.price
+  assign keep = 100 | minus: pct
+  assign now = sum | times: keep | divided_by: 100
+-%}
+<section class="mt-bundle-section mt-section" id="mt-bundle">
+  <div class="mt-container">
+    <div class="mt-bundle mt-reveal" data-mt-bundle data-pct="{{ pct }}" data-currency="{{ cart.currency.iso_code }}">
+      <div class="mt-bundle__pics">
+        <div class="mt-bundle__pic">{%- if pa.featured_image -%}<img src="{{ pa.featured_image | image_url: width: 700 }}" alt="{{ pa.title | escape }}" loading="lazy">{%- endif -%}</div>
+        <span class="mt-bundle__plus">+</span>
+        <div class="mt-bundle__pic">{%- if pb.featured_image -%}<img src="{{ pb.featured_image | image_url: width: 700 }}" alt="{{ pb.title | escape }}" loading="lazy">{%- endif -%}</div>
+      </div>
+      <div>
+        {%- if section.settings.tag != blank -%}<span class="mt-bundle__tag">{{ section.settings.tag }}</span>{%- endif -%}
+        <h2 class="mt-h2">{{ section.settings.heading }}</h2>
+        {%- if section.settings.body != blank -%}<div class="mt-body" style="margin-top:12px">{{ section.settings.body | newline_to_br }}</div>{%- endif -%}
+        <ul class="mt-bundle__list">
+          {%- for p in (1..2) -%}
+            {%- if forloop.first -%}{%- assign bp = pa -%}{%- else -%}{%- assign bp = pb -%}{%- endif -%}
+            <li style="flex-direction:column;align-items:stretch">
+              <span style="display:flex;justify-content:space-between;gap:12px"><span>{{ bp.title }}</span><span>{{ bp.selected_or_first_available_variant.price | money }}</span></span>
+              <select class="mt-select" style="margin-top:8px;min-height:42px;font-size:13px" {% if forloop.first %}data-mt-bundle-main{% else %}data-mt-bundle-select{% endif %} aria-label="{{ bp.title | escape }}"{% if bp.has_only_default_variant or bp.variants.size == 1 %} hidden{% endif %}>
+                {%- for v in bp.variants -%}
+                  <option value="{{ v.id }}" data-price="{{ v.price }}"{% if v.id == bp.selected_or_first_available_variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}{% unless v.available %} — sold out{% endunless %}</option>
+                {%- endfor -%}
+              </select>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="mt-bundle__prices">
+          <span class="mt-bundle__now" data-mt-bundle-now>{{ now | money }}</span>
+          <span class="mt-bundle__was" data-mt-bundle-was>{{ sum | money }}</span>
+          <span class="mt-bundle__save">{{ section.settings.save_label | replace: '[pct]', pct }}</span>
+        </div>
+        <button type="button" class="mt-btn mt-btn--full mt-btn--accent" data-mt-bundle-add data-loading="{{ section.settings.loading_text | escape }}">{{ section.settings.button }}</button>
+        <p class="mt-msg" data-mt-bundle-msg role="alert"></p>
+        {%- if section.settings.fine != blank -%}<p class="mt-bundle__fine">{{ section.settings.fine }}</p>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "MT – Bundle offer",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product_a", "label": "Product 1" },
+    { "type": "product", "id": "product_b", "label": "Product 2" },
+    { "type": "range", "id": "percentage", "label": "Bundle discount shown (%)", "info": "Must match the automatic discount in Shopify admin → Discounts.", "min": 5, "max": 50, "step": 5, "unit": "%", "default": 20 },
+    { "type": "text", "id": "tag", "label": "Label", "default": "Bundle & save" },
+    { "type": "text", "id": "heading", "label": "Title", "default": "Get both and save 20%" },
+    { "type": "textarea", "id": "body", "label": "Text", "default": "Feed them on time and keep them playing — the complete smart-care set for a happy, healthy pet." },
+    { "type": "text", "id": "save_label", "label": "Savings label", "info": "Use [pct] for the percentage.", "default": "You save [pct]%" },
+    { "type": "text", "id": "button", "label": "Button text", "default": "Add both to cart" },
+    { "type": "text", "id": "loading_text", "label": "Button text while adding", "default": "Adding…" },
+    { "type": "text", "id": "fine", "label": "Small print", "default": "Discount applied automatically at checkout. Free tracked shipping included." },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#e6f0ec" },
+    { "type": "range", "id": "heading_size", "label": "Title size", "min": 24, "max": 64, "step": 2, "unit": "px", "default": 40 },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 40 }
+  ],
+  "presets": [ { "name": "MT – Bundle offer" } ]
+}
+{% endschema %}

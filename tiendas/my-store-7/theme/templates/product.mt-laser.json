@@ -1,0 +1,286 @@
+{
+  "sections": {
+    "main": {
+      "type": "mt-product",
+      "blocks": {
+        "p1": {
+          "type": "perk",
+          "settings": {
+            "icon": "truck",
+            "text": "Free tracked shipping to US, CA & MX"
+          }
+        },
+        "p2": {
+          "type": "perk",
+          "settings": {
+            "icon": "return",
+            "text": "30-day money-back guarantee"
+          }
+        },
+        "p3": {
+          "type": "perk",
+          "settings": {
+            "icon": "shield",
+            "text": "Secure, encrypted checkout"
+          }
+        },
+        "p4": {
+          "type": "perk",
+          "settings": {
+            "icon": "chat",
+            "text": "Friendly support, fast replies"
+          }
+        },
+        "a1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Description",
+            "use_description": true,
+            "content": "",
+            "open": true
+          }
+        },
+        "a2": {
+          "type": "accordion",
+          "settings": {
+            "title": "Shipping & tracking",
+            "use_description": false,
+            "content": "<p>Free tracked shipping to the United States, Canada and Mexico. Orders are processed within 1–3 business days and typically arrive in 7–15 business days. You'll receive a tracking number by email as soon as your order ships.</p>",
+            "open": false
+          }
+        },
+        "a3": {
+          "type": "accordion",
+          "settings": {
+            "title": "30-day money-back guarantee",
+            "use_description": false,
+            "content": "<p>Not happy? Contact us within 30 days of delivery and we'll arrange a return and full refund. No complicated forms.</p>",
+            "open": false
+          }
+        },
+        "a4": {
+          "type": "accordion",
+          "settings": {
+            "title": "What's in the box",
+            "use_description": false,
+            "content": "<ul><li>1 × Smart Laser Cat Toy & Pet Camera</li><li>User manual</li></ul>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "a1",
+        "a4",
+        "a2",
+        "a3"
+      ],
+      "settings": {
+        "badge": "Bestseller",
+        "subtitle": "Check in on your cat and start laser playtime from your phone — so they stay active and happy while you're away.",
+        "price_note": "Free tracked shipping included · Taxes calculated at checkout",
+        "title_size": 40,
+        "max_thumbs": 12,
+        "show_stock": true,
+        "low_stock": 15,
+        "low_stock_text": "Hurry — only [count] left in stock",
+        "in_stock_text": "In stock — ready to ship",
+        "show_countdown": true,
+        "cutoff_hour": 16,
+        "countdown_text": "Order within [time] to get it processed today",
+        "weekend_text": "Order now — processed first thing Monday",
+        "urgency_text": "Holiday season is our busiest time — order early to get it on time",
+        "atc_text": "Add to cart",
+        "soldout_text": "Sold out",
+        "unavailable_text": "Unavailable",
+        "show_dynamic": true,
+        "pill_limit": 4,
+        "show_sticky": true,
+        "show_bundle": true,
+        "bundle_product_a": "smart-automatic-pet-feeder",
+        "bundle_product_b": "smart-laser-cat-toy-camera",
+        "bundle_pct": 20,
+        "bundle_title": "Complete the set & save 20%",
+        "bundle_this_text": "This item",
+        "bundle_total_text": "Bundle price",
+        "bundle_button": "Add both & save 20%",
+        "show_payment": true,
+        "payment_text": "Secure, encrypted checkout",
+        "padding_top": 32,
+        "padding_bottom": 48
+      }
+    },
+    "trust": {
+      "type": "mt-trust-bar",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free tracked shipping",
+            "text": "US, Canada & Mexico"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "30-day guarantee",
+            "text": "Love it or your money back"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure checkout",
+            "text": "Encrypted payments"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "chat",
+            "title": "Friendly support",
+            "text": "Real people, fast replies"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "title_size": 14,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "feat0": {
+      "type": "mt-feature",
+      "settings": {
+        "product": "smart-laser-cat-toy-camera",
+        "product_image_number": 2,
+        "reverse": false,
+        "eyebrow": "Why cats love it",
+        "heading": "A hunting game they never get bored of",
+        "body": "Unpredictable laser patterns trigger your cat's natural instinct to chase and pounce.",
+        "points": "Keeps indoor cats active\nHelps prevent boredom and weight gain\nStart a session from anywhere",
+        "btn_text": "",
+        "heading_size": 36,
+        "body_size": 17,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "feat1": {
+      "type": "mt-feature",
+      "settings": {
+        "product": "smart-laser-cat-toy-camera",
+        "product_image_number": 3,
+        "reverse": true,
+        "eyebrow": "Peace of mind",
+        "heading": "See what they're up to",
+        "body": "Use the built-in camera to check in on your pet during the day.",
+        "points": "Check in from your phone\nCompact white design\nLightweight — about 1.1 lb",
+        "btn_text": "",
+        "heading_size": 36,
+        "body_size": 17,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "bundle": {
+      "type": "mt-bundle",
+      "settings": {
+        "product_a": "smart-automatic-pet-feeder",
+        "product_b": "smart-laser-cat-toy-camera",
+        "percentage": 20,
+        "tag": "Bundle & save 20%",
+        "heading": "The complete smart-care set",
+        "body": "Meals on schedule and playtime on demand. Get the Smart Feeder and the Laser Cat Toy together and save 20% — applied automatically at checkout.",
+        "save_label": "You save [pct]%",
+        "button": "Add both to cart",
+        "loading_text": "Adding…",
+        "fine": "20% off applied automatically at checkout · Free tracked shipping · 30-day guarantee",
+        "bg": "#e6f0ec",
+        "heading_size": 40,
+        "padding_top": 48,
+        "padding_bottom": 24
+      }
+    },
+    "guarantee": {
+      "type": "mt-guarantee",
+      "settings": {
+        "seal_number": "30",
+        "seal_text": "Day guarantee",
+        "heading": "Love it or your money back",
+        "body": "Try it at home for 30 days. If your pet isn't loving it, just contact us and we'll make it right with a full refund. Every order ships free with tracking, so you always know where it is.",
+        "heading_size": 32,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "faq": {
+      "type": "mt-faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Orders are processed within 1–3 business days. Delivery to the US, Canada and Mexico typically takes 7–15 business days. Shipping is always free and every order includes a tracking number.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "How does the 20% bundle discount work?",
+            "answer": "<p>Add both the Smart Automatic Pet Feeder and the Smart Laser Cat Toy to your cart and 20% is taken off automatically at checkout — no code needed.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "What if my pet doesn't like it?",
+            "answer": "<p>You're covered by our 30-day money-back guarantee. Contact us within 30 days of delivery and we'll help you with a return and full refund.</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "Is checkout secure?",
+            "answer": "<p>Absolutely. Payments are processed through Shopify's encrypted checkout. We never see or store your card details.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q6"
+      ],
+      "settings": {
+        "eyebrow": "Questions?",
+        "heading": "Frequently asked questions",
+        "open_first": true,
+        "heading_size": 40,
+        "padding_top": 48,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "main",
+    "trust",
+    "feat0",
+    "feat1",
+    "bundle",
+    "guarantee",
+    "faq"
+  ]
+}

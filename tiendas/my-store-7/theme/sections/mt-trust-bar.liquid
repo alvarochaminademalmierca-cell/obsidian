@@ -1,0 +1,37 @@
+{{ 'mt-styles.css' | asset_url | stylesheet_tag }}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .mt-trust__title { font-size: {{ section.settings.title_size }}px; }
+{% endstyle %}
+<section class="mt-trust mt-section">
+  <div class="mt-container">
+    <div class="mt-trust__grid">
+      {%- for block in section.blocks -%}
+        <div class="mt-trust__item mt-reveal" data-delay="{{ forloop.index0 | modulo: 4 }}" {{ block.shopify_attributes }}>
+          <span class="mt-trust__icon">{% render 'mt-icon', name: block.settings.icon %}</span>
+          <div><p class="mt-trust__title">{{ block.settings.title }}</p><p class="mt-trust__text">{{ block.settings.text }}</p></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "MT – Trust bar",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 14 },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 16 }
+  ],
+  "blocks": [
+    { "type": "item", "name": "Trust item", "limit": 8, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "options": [ {"value": "truck", "label": "Truck"}, {"value": "return", "label": "Return"}, {"value": "lock", "label": "Lock"}, {"value": "chat", "label": "Chat"}, {"value": "shield", "label": "Shield"}, {"value": "pin", "label": "Location"}, {"value": "paw", "label": "Paw"}, {"value": "clock", "label": "Clock"}, {"value": "gift", "label": "Gift"} ], "default": "truck" },
+      { "type": "text", "id": "title", "label": "Title", "default": "Free tracked shipping" },
+      { "type": "text", "id": "text", "label": "Text", "default": "To the US, Canada & Mexico" }
+    ] }
+  ],
+  "presets": [ { "name": "MT – Trust bar", "blocks": [ { "type": "item" }, { "type": "item" }, { "type": "item" }, { "type": "item" } ] } ]
+}
+{% endschema %}
