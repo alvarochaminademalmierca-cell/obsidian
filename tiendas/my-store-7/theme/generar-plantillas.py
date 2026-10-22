@@ -3,7 +3,7 @@ out = sys.argv[1]
 L = "smart-laser-cat-toy-camera"
 F = "smart-automatic-pet-feeder"
 faq_blocks = {
- "q1": ("How long does shipping take?", "<p>Orders are processed within 1–3 business days. Delivery to the US, Canada and Mexico typically takes 7–15 business days. Shipping is always free and every order includes a tracking number.</p>"),
+ "q1": ("How long does shipping take?", "<p>Orders are processed within 1–3 business days. Delivery typically takes 7–15 business days. Shipping is always free and every order includes a tracking number.</p>"),
  "q2": ("How does the 20% bundle discount work?", "<p>Add both the Smart Automatic Pet Feeder and the Smart Laser Cat Toy to your cart and 20% is taken off automatically at checkout — no code needed.</p>"),
  "q3": ("What if my pet doesn't like it?", "<p>You're covered by our 30-day money-back guarantee. Contact us within 30 days of delivery and we'll help you with a return and full refund.</p>"),
  "q4": ("Do I need Wi-Fi for the feeder?", "<p>Only for the Wi-Fi models, which you control from your phone. The Classic Button model works on its own with simple one-touch scheduling.</p>"),
@@ -14,7 +14,7 @@ def faq(keys, pt=64):
     return {"type": "mt-faq", "blocks": {k: {"type": "question", "settings": {"question": faq_blocks[k][0], "answer": faq_blocks[k][1]}} for k in keys},
             "block_order": keys, "settings": {"eyebrow": "Questions?", "heading": "Frequently asked questions", "open_first": True, "heading_size": 40, "padding_top": pt, "padding_bottom": 80}}
 trust = {"type": "mt-trust-bar", "blocks": {
-  "t1": {"type": "item", "settings": {"icon": "truck", "title": "Free tracked shipping", "text": "US, Canada & Mexico"}},
+  "t1": {"type": "item", "settings": {"icon": "truck", "title": "Free tracked shipping", "text": "Worldwide, on every order"}},
   "t2": {"type": "item", "settings": {"icon": "return", "title": "30-day guarantee", "text": "Love it or your money back"}},
   "t3": {"type": "item", "settings": {"icon": "lock", "title": "Secure checkout", "text": "Encrypted payments"}},
   "t4": {"type": "item", "settings": {"icon": "chat", "title": "Friendly support", "text": "Real people, fast replies"}}},
@@ -49,12 +49,12 @@ index = {"sections": {
 
 def pdp(subtitle, accs, feats):
     blocks = {
-      "p1": {"type": "perk", "settings": {"icon": "truck", "text": "Free tracked shipping to US, CA & MX"}},
+      "p1": {"type": "perk", "settings": {"icon": "truck", "text": "Free tracked shipping worldwide"}},
       "p2": {"type": "perk", "settings": {"icon": "return", "text": "30-day money-back guarantee"}},
       "p3": {"type": "perk", "settings": {"icon": "shield", "text": "Secure, encrypted checkout"}},
       "p4": {"type": "perk", "settings": {"icon": "chat", "text": "Friendly support, fast replies"}},
       "a1": {"type": "accordion", "settings": {"title": "Description", "use_description": True, "content": "", "open": True}},
-      "a2": {"type": "accordion", "settings": {"title": "Shipping & tracking", "use_description": False, "content": "<p>Free tracked shipping to the United States, Canada and Mexico. Orders are processed within 1–3 business days and typically arrive in 7–15 business days. You'll receive a tracking number by email as soon as your order ships.</p>", "open": False}},
+      "a2": {"type": "accordion", "settings": {"title": "Shipping & tracking", "use_description": False, "content": "<p>Free tracked shipping worldwide, on every order. Orders are processed within 1–3 business days and typically arrive in 7–15 business days. You'll receive a tracking number by email as soon as your order ships.</p>", "open": False}},
       "a3": {"type": "accordion", "settings": {"title": "30-day money-back guarantee", "use_description": False, "content": "<p>Not happy? Contact us within 30 days of delivery and we'll arrange a return and full refund. No complicated forms.</p>", "open": False}},
     }
     order = ["p1","p2","p3","p4","a1","a2","a3"]

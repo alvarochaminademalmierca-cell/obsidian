@@ -5,7 +5,7 @@
     "mt_announcement": {
       "type": "mt-announcement",
       "blocks": {
-        "m1": { "type": "message", "settings": { "text": "Free tracked shipping to the US, Canada & Mexico" } },
+        "m1": { "type": "message", "settings": { "text": "Free tracked shipping worldwide" } },
         "m2": { "type": "message", "settings": { "text": "Bundle & save 20% — get both smart essentials" } },
         "m3": { "type": "message", "settings": { "text": "30-day money-back guarantee" } }
       },

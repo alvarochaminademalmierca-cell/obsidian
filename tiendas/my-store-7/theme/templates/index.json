@@ -27,7 +27,7 @@
           "settings": {
             "icon": "truck",
             "title": "Free tracked shipping",
-            "text": "US, Canada & Mexico"
+            "text": "Worldwide, on every order"
           }
         },
         "t2": {
@@ -174,7 +174,7 @@
           "type": "question",
           "settings": {
             "question": "How long does shipping take?",
-            "answer": "<p>Orders are processed within 1–3 business days. Delivery to the US, Canada and Mexico typically takes 7–15 business days. Shipping is always free and every order includes a tracking number.</p>"
+            "answer": "<p>Orders are processed within 1–3 business days. Delivery typically takes 7–15 business days. Shipping is always free and every order includes a tracking number.</p>"
           }
         },
         "q2": {

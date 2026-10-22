@@ -22,8 +22,7 @@
 - Mercado **International** — `gid://shopify/Market/115741884799`.
 - Mercado **North America** (US, CA, MX) — `gid://shopify/Market/115741327743`, moneda base USD, monedas locales activas.
 - Lista de precios fija **North America USD** — `gid://shopify/PriceList/37763809663` (catálogo `gid://shopify/MarketCatalog/191855296895`).
-- Zona de envío **North America** (US, CA, MX): "Free Tracked Shipping" 0 €. US y CA se sacaron de la zona "Internacional".
-- España/UE: sin cambios (precios en EUR originales).
+- **Envío gratis con seguimiento en TODO el mundo**: todas las zonas (España, UE, Internacional, North America y la nueva "Rest of World") tienen "Free Tracked Shipping" a 0. La tarifa antigua de España (6,99 € / gratis desde 55 €) se borró y se recreó a 0 porque la API no permitía editarla.
 
 ## Descuento
 - Automático **"Bundle & Save 20%"** — `gid://shopify/DiscountAutomaticNode/2649780257151`: 20% en los 2 productos con mínimo 2 unidades de esos productos (también aplica a 2 unidades del mismo producto).
@@ -54,3 +53,5 @@
 - Mensajes de urgencia arriba del todo (stock real, cuenta atrás, temporada).
 - Selector de oferta "Just this one" / "Bundle & save 20%" (preseleccionado) justo bajo el precio; al lado de las fotos en ordenador y bajo las fotos en móvil (galería 4:3 en móvil para que se vea antes).
 - El botón principal añade el producto solo o el pack completo. Estilos en `assets/mt-offers.css`.
+
+- Textos de la web (v2) cambiados a "Free tracked shipping worldwide"; página /pages/shipping y SEO de productos actualizados.
