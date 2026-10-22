@@ -12,7 +12,7 @@
 | Producto | ID | Handle | Plantilla | Precio NA |
 |---|---|---|---|---|
 | Smart Laser Cat Toy & Pet Camera | 16031483330943 | smart-laser-cat-toy-camera | product.mt-laser | 150 USD |
-| Smart Automatic Pet Feeder (4L) | 16031483429247 | smart-automatic-pet-feeder | product.mt-feeder | 85 USD (todas las variantes) |
+| Smart Automatic Pet Feeder (4L) | 16031483429247 | smart-automatic-pet-feeder | product.mt-feeder | 85 USD sin cuenco de acero · 91 USD con cuenco de acero (≈ +5 €) — el usuario dejó 4 variantes |
 
 - Títulos, descripciones, SEO, opciones de variantes reescritos en inglés (redirecciones desde los handles antiguos creadas).
 - Opciones del comedero: "Bowl" (Stainless Steel Bowl / Standard (No Steel Bowl)) y "Model" (15 valores limpios).
@@ -55,3 +55,4 @@
 - El botón principal añade el producto solo o el pack completo. Estilos en `assets/mt-offers.css`.
 
 - Textos de la web (v2) cambiados a "Free tracked shipping worldwide"; página /pages/shipping y SEO de productos actualizados.
+- Políticas listas para pegar en `tiendas/my-store-7/politicas.md`.
